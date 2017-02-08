@@ -35,6 +35,29 @@ namespace ToDoListExample.Controllers
             }
             return View(task);
         }
+        public ActionResult ToggleDone(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            task task = db.tasks.Find(id);
+            if (task == null)
+            {
+                return HttpNotFound();
+            }
+            if (task.IsDone)
+            {
+                task.IsDone = false;
+            }
+            else
+            {
+                task.IsDone = true;
+            }
+            db.SaveChanges();
+
+            return RedirectToAction("Index");
+        }
 
         // GET: tasks/Create
         public ActionResult Create()
